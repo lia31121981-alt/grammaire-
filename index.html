@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fonctions grammaticales</title>
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#1B2A52">
+<link rel="icon" href="/icon-192.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Andika:wght@400;700&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FAFBFF; --ink:#1B2A52; --muted:#5B6687; --line:#DCE3F2; --margin:#E0524A; --card:#FFFFFF;
+  --s:#2F6FED; --as:#0E9C8E; --cod:#C98F00; --coi:#8A4FD8; --cc:#2E9E4F; --ep:#E0661E; --cdn:#D6438A;
+  --ok:#2E9E4F; --ko:#D8433B;
+  color-scheme:light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --paper:#121826; --ink:#E8ECF7; --muted:#9AA4BF; --line:#2A3350; --margin:#F06A62; --card:#1A2234;
+    --s:#6C9BFF; --as:#3CC7B8; --cod:#F2C230; --coi:#B48AF0; --cc:#5CCB7A; --ep:#FF9150; --cdn:#F173AE;
+    --ok:#5CCB7A; --ko:#FF6B62; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --paper:#121826; --ink:#E8ECF7; --muted:#9AA4BF; --line:#2A3350; --margin:#F06A62; --card:#1A2234;
+  --s:#6C9BFF; --as:#3CC7B8; --cod:#F2C230; --coi:#B48AF0; --cc:#5CCB7A; --ep:#FF9150; --cdn:#F173AE;
+  --ok:#5CCB7A; --ko:#FF6B62; color-scheme:dark;
+}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:border-box}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Andika",system-ui,-apple-system,"Segoe UI",sans-serif; font-size:18px; line-height:1.55;
+  background-image:linear-gradient(to right,transparent 22px,var(--margin) 22px,var(--margin) 24px,transparent 24px);
+  background-attachment:fixed;
+}
+.wrap{max-width:680px; margin:0 auto; padding:20px 18px 40px 40px}
+h1,h2,h3{font-family:"Bricolage Grotesque",system-ui,sans-serif; line-height:1.15; margin:0}
+h1{font-size:2.1rem; font-weight:800; letter-spacing:-.01em}
+h2{font-size:1.4rem; font-weight:800; margin:28px 0 12px}
+.lead{color:var(--muted); margin:6px 0 18px}
+.demo{font-size:1.35rem; line-height:2.4; margin:8px 0 4px}
+.grp{padding:2px 4px; border-radius:4px; border-bottom:3px solid currentColor; white-space:nowrap}
+.tag{display:inline-block; font-size:.72rem; font-weight:700; line-height:1; margin-left:4px; vertical-align:super}
+nav{display:flex; gap:8px; margin:18px 0 6px; position:sticky; top:env(safe-area-inset-top,0px); background:var(--paper); padding:8px 0; z-index:5}
+body::before{content:""; position:fixed; inset:0 0 auto; height:env(safe-area-inset-top,0px); background:var(--paper); z-index:10}
+nav button{flex:1}
+button{font:inherit; color:inherit; cursor:pointer; border:2px solid var(--line); background:var(--card); border-radius:12px; padding:10px 12px; font-weight:700; min-height:48px}
+button:focus-visible{outline:3px solid var(--s); outline-offset:2px}
+nav button[aria-pressed="true"]{border-color:var(--ink); background:var(--ink); color:var(--paper)}
+.fn{border-left:6px solid var(--c); padding:4px 0 4px 14px; margin:0 0 22px}
+.fn h3{font-size:1.2rem; color:var(--c)}
+.fn p{margin:4px 0}
+.astuce{color:var(--muted)}
+.ex{margin-top:6px}
+.bar{height:6px; background:var(--line); border-radius:3px; overflow:hidden; margin-top:8px; max-width:220px}
+.bar i{display:block; height:100%; background:var(--c)}
+.small{font-size:.85rem; color:var(--muted)}
+.cmp{background:var(--card); border:2px dashed var(--line); border-radius:12px; padding:12px 14px; margin:10px 0}
+.filters{display:flex; flex-wrap:wrap; gap:6px; margin:6px 0 18px}
+.filters button{min-height:40px; padding:6px 12px; font-size:.9rem; border-radius:999px}
+.filters button[aria-pressed="true"]{border-color:var(--c,var(--ink)); background:var(--c,var(--ink)); color:var(--paper)}
+.qhead{display:flex; justify-content:space-between; color:var(--muted); font-size:.9rem}
+.sentence{font-size:1.45rem; line-height:2.2; margin:14px 0 6px; min-height:3em}
+.sentence .grp{border-bottom-style:dashed; color:var(--ink)}
+.sentence .grp.revealed{color:var(--c); border-bottom-style:solid; background:color-mix(in srgb,var(--c) 14%,transparent)}
+.ask{font-weight:700; margin:6px 0 10px}
+.opts{display:grid; grid-template-columns:1fr 1fr; gap:8px}
+.opts button{text-align:left; border-left:6px solid var(--c)}
+.opts button.good{background:color-mix(in srgb,var(--ok) 18%,var(--card)); border-color:var(--ok)}
+.opts button.bad{background:color-mix(in srgb,var(--ko) 18%,var(--card)); border-color:var(--ko)}
+.opts button:disabled{cursor:default}
+.fb{margin-top:16px; padding:14px; border-radius:12px; background:var(--card); border:2px solid var(--line)}
+.fb strong.ok{color:var(--ok)} .fb strong.ko{color:var(--ko)}
+.primary{width:100%; margin-top:14px; background:var(--ink); color:var(--paper); border-color:var(--ink)}
+.score{font-family:"Bricolage Grotesque",sans-serif; font-size:4rem; font-weight:800; line-height:1}
+[hidden]{display:none!important}
+@media (max-width:420px){ .opts{grid-template-columns:1fr} h1{font-size:1.8rem} }
+@media (prefers-reduced-motion:no-preference){ .sentence .grp.revealed{transition:background .3s,color .3s} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Les fonctions grammaticales</h1>
+  <p class="lead">Chaque groupe de mots a une mission dans la phrase. Une couleur par fonction.</p>
+  <p class="demo" id="demo"></p>
+
+  <nav>
+    <button id="tabLecon" aria-pressed="true">Leçon</button>
+    <button id="tabQuiz" aria-pressed="false">S’entraîner</button>
+  </nav>
+
+  <section id="lecon"></section>
+
+  <section id="quiz" hidden>
+    <div id="setup">
+      <h2>Que veux-tu réviser ?</h2>
+      <div class="filters" id="filters"></div>
+      <button class="primary" id="start">Commencer 10 questions</button>
+      <p class="small" id="lastScore"></p>
+    </div>
+    <div id="play" hidden>
+      <div class="qhead"><span id="qnum"></span><span id="qscore"></span></div>
+      <p class="sentence" id="sentence"></p>
+      <p class="ask" id="ask">Quelle est la fonction du groupe souligné ?</p>
+      <div class="opts" id="opts"></div>
+      <div class="fb" id="fb" hidden></div>
+      <button class="primary" id="next" hidden>Question suivante</button>
+    </div>
+    <div id="end" hidden>
+      <h2>Série terminée</h2>
+      <p class="score" id="final"></p>
+      <p id="finalMsg"></p>
+      <button class="primary" id="again">Refaire une série</button>
+    </div>
+  </section>
+</div>
+
+<script>
+const F = {
+  S:{nom:"Sujet", c:"--s", groupe:"verbe",
+     role:"Il indique qui fait l’action ou de qui l’on parle. Le verbe s’accorde avec lui.",
+     astuce:"Encadre-le avec « C’est … qui » ou « Ce sont … qui ».",
+     ex:["[Emma] mange du pain.", "C’est Emma qui mange du pain."]},
+  AS:{nom:"Attribut du sujet", c:"--as", groupe:"verbe",
+     role:"Il est relié au sujet par un verbe d’état et donne une information sur le sujet.",
+     astuce:"Verbes d’état : être, paraître, sembler, devenir, demeurer, rester, avoir l’air.",
+     ex:["Jules semble [fatigué].", "« Fatigué » parle de Jules, à travers le verbe d’état « semble »."]},
+  COD:{nom:"COD", long:"Complément d’objet direct", c:"--cod", groupe:"verbe",
+     role:"Il est relié directement au verbe d’action, sans préposition.",
+     astuce:"Pose la question « qui ? » ou « quoi ? » après le verbe.",
+     ex:["Emma mange [du pain].", "Emma mange quoi ? Du pain."]},
+  COI:{nom:"COI", long:"Complément d’objet indirect", c:"--coi", groupe:"verbe",
+     role:"Il est relié au verbe avec une préposition (à, de…). On ne peut ni le déplacer ni le supprimer.",
+     astuce:"Pose la question « à qui ? », « à quoi ? », « de qui ? » ou « de quoi ? ».",
+     ex:["Il parle [de ses vacances].", "Il parle de quoi ? De ses vacances."]},
+  CC:{nom:"Complément circonstanciel", c:"--cc", groupe:"verbe",
+     role:"Il donne une précision sur les circonstances de l’action. On peut le déplacer ou le supprimer.",
+     astuce:"Lieu (où ?), temps (quand ?), manière (comment ?), cause ou but (pourquoi ?).",
+     ex:["Il joue [dans le jardin].", "Il joue où ? Dans le jardin. Et « Dans le jardin, il joue » marche aussi."]},
+  EP:{nom:"Épithète", long:"Adjectif épithète", c:"--ep", groupe:"nom",
+     role:"Adjectif placé directement à côté du nom qu’il qualifie, sans verbe entre les deux.",
+     astuce:"S’il y a un verbe d’état entre le nom et l’adjectif, c’est un attribut, pas une épithète.",
+     ex:["La [grande] maison.", "« Grande » est collé au nom « maison »."]},
+  CDN:{nom:"Complément du nom", c:"--cdn", groupe:"nom",
+     role:"Il complète un nom et il est introduit par une préposition (de, à, en, pour…).",
+     astuce:"Il dépend d’un nom, pas du verbe : supprime-le, le nom perd juste une précision.",
+     ex:["Une unité [de mesure].", "« De mesure » précise le nom « unité »."]}
+};
+const ORDER = ["S","AS","COD","COI","CC","EP","CDN"];
+const CCT = {lieu:"Lieu (où ?)", temps:"Temps (quand ?)", maniere:"Manière (comment ?)", cause:"Cause ou but (pourquoi ?)"};
+
+const Q = [
+  {t:"[Les enfants] jouent dans la cour.", f:"S", n:"Ce sont les enfants qui jouent."},
+  {t:"Demain, [mon frère] partira en vacances.", f:"S", n:"C’est mon frère qui partira."},
+  {t:"[Elle] regarde la télévision.", f:"S", n:"C’est elle qui regarde. Un pronom peut être sujet."},
+  {t:"Dans la forêt vivent [des loups].", f:"S", n:"Piège : le sujet est après le verbe. Ce sont des loups qui vivent dans la forêt."},
+  {t:"[Le chat de la voisine] dort sur le canapé.", f:"S", n:"C’est le chat de la voisine qui dort."},
+  {t:"[Mes parents] habitent à Cergy.", f:"S", n:"Ce sont mes parents qui habitent."},
+  {t:"Jules semble [fatigué].", f:"AS", n:"« Semble » est un verbe d’état : « fatigué » donne une info sur Jules."},
+  {t:"Cette maison est [très ancienne].", f:"AS", n:"Verbe d’état « est » : on parle de la maison."},
+  {t:"Mon père deviendra [médecin].", f:"AS", n:"« Devenir » est un verbe d’état : un nom peut aussi être attribut."},
+  {t:"Les élèves restent [calmes].", f:"AS", n:"« Rester » est un verbe d’état."},
+  {t:"Tu parais [heureuse] aujourd’hui.", f:"AS", n:"« Paraître » est un verbe d’état."},
+  {t:"Le ciel est [gris].", f:"AS", n:"Verbe « être » entre le nom et l’adjectif : attribut, pas épithète."},
+  {t:"Emma mange [du pain].", f:"COD", n:"Emma mange quoi ? Du pain. Pas de préposition."},
+  {t:"Le facteur apporte [une lettre].", f:"COD", n:"Il apporte quoi ? Une lettre."},
+  {t:"Nous regardons [le match].", f:"COD", n:"Nous regardons quoi ? Le match."},
+  {t:"Paul [la] voit chaque jour.", f:"COD", n:"Piège : le pronom « la » est placé avant le verbe. Paul voit qui ? La (elle)."},
+  {t:"Ma mère prépare [un gâteau au chocolat].", f:"COD", n:"Elle prépare quoi ? Un gâteau au chocolat."},
+  {t:"Le chauffeur conduit [les clients] à l’aéroport.", f:"COD", n:"Il conduit qui ? Les clients."},
+  {t:"Il parle [de ses vacances].", f:"COI", n:"Il parle de quoi ? De ses vacances."},
+  {t:"Je pense [à mes amis].", f:"COI", n:"Je pense à qui ? À mes amis."},
+  {t:"Elle téléphone [à sa grand-mère].", f:"COI", n:"Elle téléphone à qui ? À sa grand-mère."},
+  {t:"Les enfants obéissent [à leurs parents].", f:"COI", n:"Ils obéissent à qui ? À leurs parents."},
+  {t:"Il se souvient [de cette histoire].", f:"COI", n:"Il se souvient de quoi ? De cette histoire."},
+  {t:"Nous profitons [du soleil].", f:"COI", n:"Nous profitons de quoi ? Du soleil. « Du » = « de le »."},
+  {t:"Il joue [dans le jardin].", f:"CC", cc:"lieu", n:"Il joue où ? Dans le jardin."},
+  {t:"Il viendra [demain].", f:"CC", cc:"temps", n:"Il viendra quand ? Demain."},
+  {t:"Il court [rapidement].", f:"CC", cc:"maniere", n:"Il court comment ? Rapidement."},
+  {t:"Il est resté chez lui [à cause de la pluie].", f:"CC", cc:"cause", n:"Il est resté pourquoi ? À cause de la pluie."},
+  {t:"[Chaque matin], je bois un café.", f:"CC", cc:"temps", n:"Je bois quand ? Chaque matin. On peut le déplacer : « Je bois un café chaque matin »."},
+  {t:"Nous marchons [avec prudence].", f:"CC", cc:"maniere", n:"Nous marchons comment ? Avec prudence."},
+  {t:"Elle travaille [pour réussir son examen].", f:"CC", cc:"cause", n:"Elle travaille pourquoi ? Pour réussir (c’est le but)."},
+  {t:"Le taxi attend [devant la gare].", f:"CC", cc:"lieu", n:"Le taxi attend où ? Devant la gare."},
+  {t:"[En hiver], les jours sont courts.", f:"CC", cc:"temps", n:"Quand ? En hiver. On peut le supprimer : « Les jours sont courts »."},
+  {t:"La [grande] maison est au bout de la rue.", f:"EP", n:"« Grande » est collé au nom « maison »."},
+  {t:"J’ai acheté une voiture [rouge].", f:"EP", n:"« Rouge » est collé au nom « voiture », sans verbe entre les deux."},
+  {t:"Un [petit] chien aboie.", f:"EP", n:"« Petit » qualifie directement « chien »."},
+  {t:"Elle porte une robe [élégante].", f:"EP", n:"« Élégante » est placé juste après le nom « robe »."},
+  {t:"Il fait un temps [magnifique].", f:"EP", n:"« Magnifique » est collé au nom « temps »."},
+  {t:"Une unité [de mesure].", f:"CDN", n:"« De mesure » complète le nom « unité » avec la préposition « de »."},
+  {t:"Le livre [de Marie] est sur la table.", f:"CDN", n:"« De Marie » précise le nom « livre »."},
+  {t:"J’aime la tarte [aux pommes].", f:"CDN", n:"« Aux pommes » précise le nom « tarte » (« aux » = « à les »)."},
+  {t:"Il boit dans une tasse [en porcelaine].", f:"CDN", n:"« En porcelaine » précise le nom « tasse »."},
+  {t:"La porte [du garage] est ouverte.", f:"CDN", n:"« Du garage » précise le nom « porte »."},
+  {t:"Je cherche ma carte [de transport].", f:"CDN", n:"« De transport » précise le nom « carte »."}
+];
+
+const $ = id => document.getElementById(id);
+const esc = s => s.replace(/&/g,"&amp;").replace(/</g,"&lt;");
+
+function render(text, key, cls){
+  return esc(text).replace(/\[([^\]]+)\]/g, (_,g) =>
+    `<span class="grp ${cls||""}" style="--c:var(${F[key].c});color:var(${F[key].c})">${g}</span>`);
+}
+
+/* Démo colorée */
+$("demo").innerHTML = [
+  ["Emma","S"],[" mange ",null],["du pain","COD"],[" ",null],["frais","EP"],[" ",null],["dans la cuisine","CC"],[".",null]
+].map(([w,k]) => k ? `<span class="grp" style="color:var(${F[k].c})">${w}<span class="tag">${F[k].nom==="Complément circonstanciel"?"CC":F[k].nom}</span></span>` : w).join("");
+
+/* Stats */
+let stats = {};
+try { stats = JSON.parse(localStorage.getItem("fg-stats")||"{}"); } catch(e){ stats = {}; }
+function saveStats(){ try{ localStorage.setItem("fg-stats", JSON.stringify(stats)); }catch(e){} }
+
+/* Leçon */
+function renderLecon(){
+  let h = "";
+  ["verbe","nom"].forEach(gr => {
+    h += `<h2>${gr==="verbe" ? "Les fonctions liées au verbe" : "Les fonctions liées au nom"}</h2>`;
+    ORDER.filter(k => F[k].groupe===gr).forEach(k => {
+      const f = F[k], st = stats[k];
+      const pct = st && st.n ? Math.round(100*st.ok/st.n) : null;
+      h += `<div class="fn" style="--c:var(${f.c})">
+        <h3>${f.long ? f.long+" ("+f.nom+")" : f.nom}</h3>
+        <p>${f.role}</p>
+        <p class="astuce">Astuce : ${f.astuce}</p>
+        <p class="ex">${render(f.ex[0],k)}<br><span class="small">${f.ex[1]}</span></p>
+        ${pct!==null ? `<div class="bar"><i style="width:${pct}%"></i></div><span class="small">${st.ok} bonnes réponses sur ${st.n}</span>` : ""}
+      </div>`;
+    });
+  });
+  h += `<h2>Les pièges à connaître</h2>
+  <div class="cmp"><strong>Attribut ou épithète ?</strong><br>
+    ${render("Le ciel est [gris].","AS")} : verbe d’état entre les deux, c’est un attribut.<br>
+    ${render("Un ciel [gris].","EP")} : collé au nom, c’est une épithète.</div>
+  <div class="cmp"><strong>COI ou CC ?</strong><br>
+    ${render("Il pense [à Paris].","COI")} : impossible de supprimer, « il pense » seul ne veut plus dire la même chose.<br>
+    ${render("Il travaille [à Paris].","CC")} : « il travaille » tient tout seul, et on peut dire « À Paris, il travaille ».</div>
+  <div class="cmp"><strong>COI ou complément du nom ?</strong><br>
+    ${render("Il parle [de son père].","COI")} : dépend du verbe « parle ».<br>
+    ${render("La voiture [de son père].","CDN")} : dépend du nom « voiture ».</div>`;
+  $("lecon").innerHTML = h;
+}
+
+/* Onglets */
+function tab(which){
+  $("lecon").hidden = which!=="lecon"; $("quiz").hidden = which!=="quiz";
+  $("tabLecon").setAttribute("aria-pressed", which==="lecon");
+  $("tabQuiz").setAttribute("aria-pressed", which==="quiz");
+  if(which==="lecon") renderLecon();
+}
+$("tabLecon").onclick = () => tab("lecon");
+$("tabQuiz").onclick = () => tab("quiz");
+
+/* Filtres */
+let filter = "ALL";
+function renderFilters(){
+  const items = [["ALL","Tout mélanger",null]].concat(ORDER.map(k => [k, F[k].nom==="Complément circonstanciel"?"CC":F[k].nom, F[k].c]));
+  $("filters").innerHTML = items.map(([k,l,c]) =>
+    `<button data-k="${k}" aria-pressed="${filter===k}" ${c?`style="--c:var(${c})"`:""}>${l}</button>`).join("");
+  $("filters").querySelectorAll("button").forEach(b => b.onclick = () => { filter = b.dataset.k; renderFilters(); });
+}
+
+/* Quiz */
+let serie = [], idx = 0, score = 0, step = "fn";
+function shuffle(a){ for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+function start(){
+  let pool = filter==="ALL" ? Q.slice() : Q.filter(q => q.f===filter);
+  // pour une fonction seule, on mélange avec quelques pièges des autres
+  if(filter!=="ALL"){ pool = pool.concat(shuffle(Q.filter(q => q.f!==filter)).slice(0,4)); }
+  serie = shuffle(pool).slice(0,10); idx = 0; score = 0;
+  $("setup").hidden = true; $("end").hidden = true; $("play").hidden = false;
+  show();
+}
+
+function show(){
+  const q = serie[idx]; step = "fn";
+  $("qnum").textContent = `Question ${idx+1} sur ${serie.length}`;
+  $("qscore").textContent = `${score} point${score>1?"s":""}`;
+  $("sentence").innerHTML = render(q.t, q.f);
+  $("ask").textContent = "Quelle est la fonction du groupe souligné ?";
+  $("fb").hidden = true; $("next").hidden = true;
+  $("opts").innerHTML = ORDER.map(k =>
+    `<button data-k="${k}" style="--c:var(${F[k].c})">${F[k].nom}</button>`).join("");
+  $("opts").querySelectorAll("button").forEach(b => b.onclick = () => answer(b.dataset.k, b));
+}
+
+function answer(k, btn){
+  const q = serie[idx];
+  const buttons = $("opts").querySelectorAll("button");
+  buttons.forEach(b => b.disabled = true);
+  stats[q.f] = stats[q.f] || {ok:0,n:0}; stats[q.f].n++;
+  const good = k===q.f;
+  buttons.forEach(b => { if(b.dataset.k===q.f) b.classList.add("good"); });
+  if(!good) btn.classList.add("bad");
+  $("sentence").querySelector(".grp").classList.add("revealed");
+  if(good){ stats[q.f].ok++; score++; }
+  saveStats();
+  if(good && q.f==="CC"){ askCC(q); return; }
+  feedback(good, q, null);
+}
+
+function askCC(q){
+  step = "cc";
+  $("ask").textContent = "Bien vu ! Bonus : quelle circonstance ?";
+  $("opts").innerHTML = Object.entries(CCT).map(([k,l]) =>
+    `<button data-k="${k}" style="--c:var(--cc)">${l}</button>`).join("");
+  $("opts").querySelectorAll("button").forEach(b => b.onclick = () => {
+    const ok = b.dataset.k===q.cc;
+    $("opts").querySelectorAll("button").forEach(x => { x.disabled = true; if(x.dataset.k===q.cc) x.classList.add("good"); });
+    if(!ok) b.classList.add("bad"); else score += 0.5;
+    feedback(true, q, ok);
+  });
+}
+
+function feedback(good, q, ccOk){
+  const f = F[q.f];
+  let head = good ? `<strong class="ok">Bonne réponse.</strong>` : `<strong class="ko">Pas tout à fait : c’est ${f.long ? "un "+f.long.toLowerCase() : (q.f==="S"?"le sujet":"un "+f.nom.toLowerCase())}.</strong>`;
+  if(ccOk===true) head += ` Circonstance juste, +½ point.`;
+  if(ccOk===false) head += ` Mais la circonstance est : ${CCT[q.cc].toLowerCase()}.`;
+  $("fb").innerHTML = `${head}<p style="margin:8px 0 4px">${q.n}</p><p class="small" style="margin:0">Astuce : ${f.astuce}</p>`;
+  $("fb").hidden = false; $("next").hidden = false;
+  $("next").textContent = idx===serie.length-1 ? "Voir mon score" : "Question suivante";
+  $("qscore").textContent = `${score} point${score>1?"s":""}`;
+  $("next").focus({preventScroll:true});
+}
+
+$("next").onclick = () => { idx++; if(idx<serie.length) show(); else finish(); };
+
+function finish(){
+  $("play").hidden = true; $("end").hidden = false;
+  const max = serie.length + serie.filter(q => q.f==="CC").length*0.5;
+  $("final").textContent = `${score} / ${max}`;
+  const r = score/max;
+  $("finalMsg").textContent = r>=.9 ? "Excellent, c’est maîtrisé." : r>=.6 ? "Bon travail. Relis les pièges dans la leçon pour gagner encore quelques points." : "Relis la leçon, surtout les astuces, puis refais une série.";
+  try{ localStorage.setItem("fg-last", `${score} / ${max}`); }catch(e){}
+}
+$("again").onclick = () => { $("end").hidden = true; $("setup").hidden = false; showLast(); };
+$("start").onclick = start;
+
+function showLast(){
+  let l = null; try{ l = localStorage.getItem("fg-last"); }catch(e){}
+  $("lastScore").textContent = l ? `Dernière série : ${l}` : "";
+}
+
+renderLecon(); renderFilters(); showLast();
+if("serviceWorker" in navigator){ navigator.serviceWorker.register("/sw.js").catch(()=>{}); }
+</script>
+</body>
+</html>
